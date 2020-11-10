@@ -59,6 +59,13 @@ header{
   border: solid black 1px;
 }
 
+#ResultsTable{
+  margin-top: 10px;
+  margin-left: 20px;
+  display: block;
+  text-align: center;
+}
+
 #ProductFrames{
   clear: both;
 }

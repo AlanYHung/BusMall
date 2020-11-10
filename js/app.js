@@ -5,8 +5,8 @@ var tableImage1 = document.getElementById('Image1');
 var tableImage2 = document.getElementById('Image2');
 var tableImage3 = document.getElementById('Image3');
 var bmpTable = document.getElementById('ProductsTable');
-var viewResultsButton = document.getElementById('VoteButton');
-var numOfVotingRounds = 10;
+var viewResultsButton = document.getElementById('ViewResults');
+var numOfVotingRounds = 25;
 var numOfVotingTimes = 0;
 
 var bussMallProducts = function(bmpName){ //bmp stands for bussMallProducts to denote variables belong to this constructor

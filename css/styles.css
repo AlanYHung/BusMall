@@ -1,12 +1,112 @@
+/*===================================================================*/
+/*                       Universal Styling                           */
+/*===================================================================*/
+
 body{
   margin: auto;
-  width: 960px;
+  width: 1880px;
 }
+
+
+/*===================================================================*/
+/*                       Header Section                              */
+/*===================================================================*/
 
 header{
   margin-top: 20px;
+  margin-left: 10px;
+  display: inline-flex;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: x-large;
+  font-size: 40px;
   font-weight: bold;
+}
+
+#HeaderTitle{
+  margin-left: 10px;
+  line-height: 50px;
+}
+
+#HeaderNavigation{
+  margin-left: 627px;
+  font-size: 25px;
+  font-weight: normal;
+}
+
+#HeaderNavigationList{
+  display: inline-flex;
+}
+
+.HeaderNavigationListItem{
+  padding: 11.5px;
+  border: solid black 1px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+
+/*===================================================================*/
+/*                       Body Section                                */
+/*===================================================================*/
+
+#AllFrames{
+  margin-top: 30px;
+  display: flex;
+}
+
+#Results{
+  width: 376px;
+  height: 774px;
+  border: solid black 1px;
+}
+
+#ResultsTable{
+  margin-top: 10px;
+  margin-left: 20px;
+  display: block;
   text-align: center;
+}
+
+#ProductFrames{
+  clear: both;
+}
+
+#Products{
+  width: 1504px;
+  height: 385px;
+  border: solid black 1px;
+  text-align: center;
+}
+
+#ProductsTable{
+  margin: auto;
+  margin-top: 42.5px;
+  width: 1410px;
+  height: 300px;
+}
+
+#Vote{
+  width: 1504px;
+  height: 77px;
+  border: solid black 1px;
+  text-align: center;
+  line-height: 77px;
+}
+
+#VoteButton{
+  width: 1052.8px;
+  height: 37.9px;
+}
+
+#ProductDescription{
+  margin: auto;
+  width: 1504px;
+  height: 308px;
+  border: solid black 1px;
+}
+
+#ProductDescription article{
+  margin: auto;
+  margin-top: 20px;
+  width: 1470px;
+  height: 288px;
 }

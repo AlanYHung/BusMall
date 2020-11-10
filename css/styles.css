@@ -72,9 +72,9 @@ header{
 
 #ProductsTable{
   margin: auto;
-  width: 1400px;
+  margin-top: 42.5px;
+  width: 1410px;
   height: 300px;
-  border: solid black 1px;
 }
 
 #Vote{

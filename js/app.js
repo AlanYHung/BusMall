@@ -1,6 +1,6 @@
 'use strict';
 
-var numOfVotingRounds = 5;
+var numOfVotingRounds = 25;
 var numOfVotingTimes = 0;
 var numOfImagesToBeDisplayed = 3;
 var allBussMallProducts = [];
@@ -86,16 +86,16 @@ function drawBarGraph(){
       labels: allBussMallProductTitles,
       datasets: [
         {
-          label: 'Product Shown',
-          barPercentage: 0.5,
-          backgroundColor: 'Blue',
-          data: allBussMallProductShown
-        },
-        {
           label: 'Product Voted',
           barPercentage: 0.5,
           backgroundColor: 'Green',
           data: allBussMallProductVote
+        },
+        {
+          label: 'Product Shown',
+          barPercentage: 0.5,
+          backgroundColor: 'Black',
+          data: allBussMallProductShown
         }
       ]
     },
@@ -126,17 +126,21 @@ function bmpViewResults(event){
     var rtDataElement = document.createElement('th');
 
     rtParentElement.innerHTML = '';
+    rtParentElement.style.border = 'black solid 1px';
 
     rtParentElement.appendChild(rtRowElement);
     rtDataElement.textContent = 'Product';
     rtRowElement.appendChild(rtDataElement);
+    rtRowElement.style.border = 'black solid 1px';
+    rtDataElement.style.marginRight = '3px';
 
     rtDataElement = document.createElement('th');
-    rtDataElement.textContent = 'Times Viewed';
+    rtDataElement.textContent = '# Viewed';
     rtRowElement.appendChild(rtDataElement);
+    rtDataElement.style.marginRight = '3px';
 
     rtDataElement = document.createElement('th');
-    rtDataElement.textContent = 'Times Voted';
+    rtDataElement.textContent = '# Voted';
     rtRowElement.appendChild(rtDataElement);
 
     for(var i = 0; i < allBussMallProducts.length; i++){

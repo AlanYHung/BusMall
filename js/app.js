@@ -1,13 +1,16 @@
 'use strict';
 
-var allBussMallProducts = [];
-var tableImage1 = document.getElementById('Image1');
-var tableImage2 = document.getElementById('Image2');
-var tableImage3 = document.getElementById('Image3');
-var bmpTable = document.getElementById('ProductsTable');
-var viewResultsButton = document.getElementById('ViewResults');
-var numOfVotingRounds = 25;
+var numOfVotingRounds = 5;
 var numOfVotingTimes = 0;
+var numOfImagesToBeDisplayed = 3;
+var allBussMallProducts = [];
+var allBussMallProductTitles = [];
+var allBussMallProductShown = [];
+var allBussMallProductVote = [];
+var randomProductIndex = [];
+var tableImageElement = [document.getElementById('Image1'), document.getElementById('Image2'), document.getElementById('Image3')];
+var bmpTable = document.getElementById('ProductsTable');
+var viewResultsButton = document.getElementById('ViewResultsButton');
 
 var bussMallProducts = function(bmpName){ //bmp stands for bussMallProducts to denote variables belong to this constructor
   this.bmpFilePath = `./images/${bmpName}`;
@@ -16,44 +19,46 @@ var bussMallProducts = function(bmpName){ //bmp stands for bussMallProducts to d
   this.bmpVote = 0;
 
   allBussMallProducts.push(this);
+  allBussMallProductTitles.push(this.bmpTitle);
+  allBussMallProductShown.push(this.bmpShown);
+  allBussMallProductVote.push(this.bmpVote);
 }
 
 function randomIndex(){
   return Math.floor(Math.random() * allBussMallProducts.length);
 }
 
+function getRandomNumbers(){
+  var getRandomIndex = randomIndex();
+
+  for(var i = 0; i < numOfImagesToBeDisplayed; i++){
+    while(randomProductIndex.includes(getRandomIndex)){
+      getRandomIndex = randomIndex();
+    }
+
+    randomProductIndex.unshift(getRandomIndex);
+  }
+
+  while(randomProductIndex.length > numOfImagesToBeDisplayed * 2){
+    randomProductIndex.pop();
+  }
+}
+
 function bmpRender(){
-  var bmpRenderWidth = '470';
-  var bmpRenderheight = '300';
-  var bmpImageIndex1 = 0;
-  var bmpImageIndex2 = 0;
-  var bmpImageIndex3 = 0;
+  var bmpRenderWidth = '1410';
+  var bmpRenderheight = '900';
 
-  bmpImageIndex1 = randomIndex();
+  getRandomNumbers();
 
-  do{
-    bmpImageIndex2 = randomIndex();
-    bmpImageIndex3 = randomIndex();
-  }while(bmpImageIndex2 === bmpImageIndex1 || bmpImageIndex2 === bmpImageIndex3 || bmpImageIndex3 === bmpImageIndex1);
-  
-  tableImage1.src = allBussMallProducts[bmpImageIndex1].bmpFilePath;
-  tableImage2.src = allBussMallProducts[bmpImageIndex2].bmpFilePath;
-  tableImage3.src = allBussMallProducts[bmpImageIndex3].bmpFilePath;
-
-  tableImage1.Title = allBussMallProducts[bmpImageIndex1].bmpTitle;
-  tableImage2.Title = allBussMallProducts[bmpImageIndex2].bmpTitle;
-  tableImage3.Title = allBussMallProducts[bmpImageIndex3].bmpTitle;
-
-  tableImage1.Alt = allBussMallProducts[bmpImageIndex1].bmpAlt;
-  tableImage2.Alt = allBussMallProducts[bmpImageIndex2].bmpAlt;
-  tableImage3.Alt = allBussMallProducts[bmpImageIndex3].bmpAlt;
-
-  allBussMallProducts[bmpImageIndex1].bmpShown++;
-  allBussMallProducts[bmpImageIndex2].bmpShown++;
-  allBussMallProducts[bmpImageIndex3].bmpShown++;
-
-  tableImage1.width = tableImage2.width = tableImage3.width = bmpRenderWidth;
-  tableImage1.height = tableImage2.height = tableImage3.height = bmpRenderheight;
+  for(var i = 0; i < numOfImagesToBeDisplayed; i++){
+    tableImageElement[i].src = allBussMallProducts[randomProductIndex[i]].bmpFilePath;
+    tableImageElement[i].Title = allBussMallProducts[randomProductIndex[i]].bmpTitle;
+    tableImageElement[i].Alt = allBussMallProducts[randomProductIndex[i]].bmpAlt;
+    allBussMallProducts[randomProductIndex[i]].bmpShown++;
+    allBussMallProductShown[randomProductIndex[i]]++;
+    tableImageElement[i].width = bmpRenderWidth / numOfImagesToBeDisplayed;
+    tableImageElement[i].height = bmpRenderheight / numOfImagesToBeDisplayed;
+  }
 }
 
 function bmpHandleClick(event){
@@ -64,12 +69,54 @@ function bmpHandleClick(event){
   {
     if(event.target.Title === allBussMallProducts[i].bmpTitle){
       allBussMallProducts[i].bmpVote++;
+      allBussMallProductVote[i]++;
     }
   }
 
   if(numOfVotingTimes === numOfVotingRounds){
     bmpTable.removeEventListener('click', bmpHandleClick);
   }
+}
+
+function drawBarGraph(){
+  var canvasParent = document.getElementById('ProductChart');
+  new Chart(canvasParent, {
+    type: 'bar',
+    data: {
+      labels: allBussMallProductTitles,
+      datasets: [
+        {
+          label: 'Product Shown',
+          barPercentage: 0.5,
+          backgroundColor: 'Blue',
+          data: allBussMallProductShown
+        },
+        {
+          label: 'Product Voted',
+          barPercentage: 0.5,
+          backgroundColor: 'Green',
+          data: allBussMallProductVote
+        }
+      ]
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          stacked: true,
+          ticks: {
+            autoSkip: false,
+            maxRotation: 75,
+            minRotation: 75
+          }
+        }],
+        yAxes: [{
+          stacked: true
+        }]
+      }
+    }
+  })
+
+  canvasParent.style.width = '1460px';
 }
 
 function bmpViewResults(event){
@@ -92,10 +139,6 @@ function bmpViewResults(event){
     rtDataElement.textContent = 'Times Voted';
     rtRowElement.appendChild(rtDataElement);
 
-    rtDataElement = document.createElement('th');
-    rtDataElement.textContent = 'Percent Chosen';
-    rtRowElement.appendChild(rtDataElement);
-
     for(var i = 0; i < allBussMallProducts.length; i++){
       rtRowElement = document.createElement('tr');
       rtParentElement.appendChild(rtRowElement);
@@ -106,20 +149,16 @@ function bmpViewResults(event){
 
       rtDataElement = document.createElement('td');
       rtDataElement.textContent = allBussMallProducts[i].bmpShown;
+      rtDataElement.align = 'center';
       rtRowElement.appendChild(rtDataElement);
 
       rtDataElement = document.createElement('td');
       rtDataElement.textContent = allBussMallProducts[i].bmpVote;
-      rtRowElement.appendChild(rtDataElement);
-
-      rtDataElement = document.createElement('td');
-      if(allBussMallProducts[i].bmpShown !== 0){
-        rtDataElement.textContent = `${Math.round((allBussMallProducts[i].bmpVote / allBussMallProducts[i].bmpShown) * 100)}%`;
-      }else{
-        rtDataElement.textContent = 0;
-      }
+      rtDataElement.align = 'center';
       rtRowElement.appendChild(rtDataElement);
     }
+
+    drawBarGraph();
   }
 }
 

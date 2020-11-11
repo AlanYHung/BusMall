@@ -59,11 +59,18 @@ header{
   border: solid black 1px;
 }
 
+#ResultsTableTitle{
+  margin-top: 20px;
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: xx-large;
+}
+
 #ResultsTable{
-  margin-top: 10px;
-  margin-left: 20px;
+  margin-top: 60px;
+  margin-left: 55px;
   display: block;
-  text-align: center;
+  padding: 5px;
 }
 
 #ProductFrames{
@@ -84,7 +91,7 @@ header{
   height: 300px;
 }
 
-#Vote{
+#ViewResults{
   width: 1504px;
   height: 77px;
   border: solid black 1px;
@@ -92,21 +99,35 @@ header{
   line-height: 77px;
 }
 
-#VoteButton{
+#ViewResultsButton{
   width: 1052.8px;
   height: 37.9px;
 }
 
-#ProductDescription{
+#AnalyticalProductChart{
   margin: auto;
   width: 1504px;
   height: 308px;
   border: solid black 1px;
 }
 
-#ProductDescription article{
-  margin: auto;
+#ProductChart{
   margin-top: 20px;
-  width: 1470px;
-  height: 288px;
+  margin-left: 20px;
+}
+
+
+/*===================================================================*/
+/*                       Footer Section                                */
+/*===================================================================*/
+
+footer{
+  height: 80px;
+  border: black solid 1px;
+  text-align: center;
+}
+
+#CopyRight{
+  margin-top: 20px;
+  font-size: xx-large;
 }

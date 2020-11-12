@@ -73,6 +73,15 @@ header{
   padding: 5px;
 }
 
+#ResultsTableHeader{
+  border: black solid 1px;
+}
+
+#ResultsTableHeader th{
+  padding: 5px;
+  width: 75px;
+}
+
 #ProductFrames{
   clear: both;
 }
@@ -86,9 +95,17 @@ header{
 
 #ProductsTable{
   margin: auto;
-  margin-top: 42.5px;
+  margin-top: 21px;
   width: 1410px;
   height: 300px;
+}
+
+#ProductsTableHeader{
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: xx-large;
 }
 
 #ViewResults{

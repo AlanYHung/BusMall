@@ -1,7 +1,7 @@
 'use strict';
 
 var numOfVotingRounds = 25;
-var numOfVotingTimes = 0;
+var numOfVotingTimes = 1;
 var numOfImagesToBeDisplayed = 3;
 var allBussMallProducts = [];
 var allBussMallProductTitles = [];
@@ -11,6 +11,8 @@ var randomProductIndex = [];
 var tableImageElement = [document.getElementById('Image1'), document.getElementById('Image2'), document.getElementById('Image3')];
 var bmpTable = document.getElementById('ProductsTable');
 var viewResultsButton = document.getElementById('ViewResultsButton');
+var lsShownTag = 'Shown'; //ls = Local Storage
+var lsVotesTag = 'Votes';
 
 var bussMallProducts = function(bmpName){ //bmp stands for bussMallProducts to denote variables belong to this constructor
   this.bmpFilePath = `./images/${bmpName}`;
@@ -61,10 +63,39 @@ function bmpRender(){
   }
 }
 
-function bmpHandleClick(event){
-  bmpRender();
-  numOfVotingTimes++;
+function retrieveResults(){
+  var retrieveShownfromLS = localStorage.getItem(lsShownTag); // LS = Local Storage
+  var retrieveVotesfromLS = localStorage.getItem(lsVotesTag);
 
+  var parsedShown = JSON.parse(retrieveShownfromLS);
+  var parsedVotes = JSON.parse(retrieveVotesfromLS);
+
+  for(var i = 0; i < allBussMallProducts.length; i++){
+    allBussMallProductShown[i] += parsedShown[i];
+    allBussMallProductVote[i] += parsedVotes[i];
+  }
+
+  localStorage.clear();
+  storeResults();
+}
+
+function storeResults(){
+  var srLSShown = []; //sr = storeResults  |  LS = Local Storage
+  var srLSVotes = [];
+
+  if(!localStorage.length){
+    srLSShown = JSON.stringify(allBussMallProductShown);
+    srLSVotes = JSON.stringify(allBussMallProductVote);
+
+    localStorage.setItem(lsShownTag, srLSShown);
+    localStorage.setItem(lsVotesTag, srLSVotes);
+  }else{
+    retrieveResults();
+    console.log('Completed');
+  }
+}
+
+function bmpHandleClick(event){
   for(var i = 0; i < allBussMallProducts.length; i++)
   {
     if(event.target.Title === allBussMallProducts[i].bmpTitle){
@@ -75,6 +106,15 @@ function bmpHandleClick(event){
 
   if(numOfVotingTimes === numOfVotingRounds){
     bmpTable.removeEventListener('click', bmpHandleClick);
+
+    for(i = 0; i < tableImageElement.length; i++){
+      tableImageElement[i].src = './images/Done.jpg'
+    }
+
+    storeResults();
+  }else{
+    bmpRender();
+    numOfVotingTimes++;
   }
 }
 
@@ -100,6 +140,11 @@ function drawBarGraph(){
       ]
     },
     options: {
+      title: {
+        display: true,
+        text: 'Total Results',
+        fontSize: 20
+      },
       scales: {
         xAxes: [{
           stacked: true,
@@ -113,13 +158,13 @@ function drawBarGraph(){
           stacked: true
         }]
       }
-    }
-  })
+    },
+  });
 
   canvasParent.style.width = '1460px';
 }
 
-function bmpViewResults(event){
+function bmpViewResults(){
   if(numOfVotingTimes === numOfVotingRounds){
     var rtParentElement = document.getElementById('ResultsTable'); //rt = ResultsTable
     var rtRowElement = document.createElement('tr');
@@ -127,17 +172,15 @@ function bmpViewResults(event){
 
     rtParentElement.innerHTML = '';
     rtParentElement.style.border = 'black solid 1px';
+    rtRowElement.setAttribute('id','ResultsTableHeader');
 
     rtParentElement.appendChild(rtRowElement);
     rtDataElement.textContent = 'Product';
     rtRowElement.appendChild(rtDataElement);
-    rtRowElement.style.border = 'black solid 1px';
-    rtDataElement.style.marginRight = '3px';
 
     rtDataElement = document.createElement('th');
     rtDataElement.textContent = '# Viewed';
     rtRowElement.appendChild(rtDataElement);
-    rtDataElement.style.marginRight = '3px';
 
     rtDataElement = document.createElement('th');
     rtDataElement.textContent = '# Voted';
